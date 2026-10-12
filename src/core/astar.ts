@@ -180,6 +180,12 @@ export class AStarPathfinder {
     while (!openSet.isEmpty()) {
       const current = openSet.dequeue()!;
       const currentKey = coordKey(current.gx, current.gy);
+
+      // An improved path may enqueue a newer node before an older queue entry
+      // is popped. Ignore stale entries so they cannot close a cell at a higher cost.
+      if (openSetMap.get(currentKey) !== current) {
+        continue;
+      }
       openSetMap.delete(currentKey);
 
       if (closedSet.has(currentKey)) {
@@ -210,8 +216,8 @@ export class AStarPathfinder {
         if (n.dx !== 0 && n.dy !== 0) {
           const adjCell1 = grid.getCell(current.gx + n.dx, current.gy);
           const adjCell2 = grid.getCell(current.gx, current.gy + n.dy);
-          if (!adjCell1?.isTraversable && !adjCell2?.isTraversable) {
-            continue; // Cannot squeeze diagonally between two solid blockers
+          if (!adjCell1?.isTraversable || !adjCell2?.isTraversable) {
+            continue; // Do not cross a blocked corner diagonally.
           }
         }
 
