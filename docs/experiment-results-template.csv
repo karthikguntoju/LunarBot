@@ -1,0 +1,2 @@
+run_id,commit_sha,date,scenario,terrain_seed,grid_size,world_size,start_x,start_y,goal_x,goal_y,strategy,planning_success,path_length_world_units,mean_risk_cost,max_slope_deg,estimated_energy_wh,expanded_nodes,planning_time_ms,replanning_triggered,replanned_path_avoids_blocked_cell,exploration_coverage_pct,notes
+R001,REPLACE,YYYY-MM-DD,unobstructed,42,40,80,5,6,15,6,shortest,Not measured,Not measured,Not measured,Not measured,Not measured,Not measured,Not measured,No,Not applicable,Not applicable,Record actual results only
