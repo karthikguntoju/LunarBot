@@ -1,6 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { generateLunarTerrain } from '../core/terrainGenerator';
 import { NavigationGrid } from '../core/navigationGrid';
 import { AStarPathfinder } from '../core/astar';
@@ -98,7 +96,7 @@ describe('LunaBot reproducible route benchmark', () => {
     const artifact = {
       description: 'Exploratory software benchmark on procedurally generated terrain; not a physical lunar rover test.',
       generatedAtUtc: new Date().toISOString(),
-      runtime: process.version,
+      runtime: 'Node.js in GitHub Actions runner; see workflow log for exact version',
       configuration: {
         seeds: SEEDS,
         gridSize: 40,
@@ -123,10 +121,8 @@ describe('LunaBot reproducible route benchmark', () => {
       cases,
     };
 
-    const outputDir = resolve('benchmark-artifacts');
-    mkdirSync(outputDir, { recursive: true });
-    writeFileSync(resolve(outputDir, 'benchmark-results.json'), JSON.stringify(artifact, null, 2) + '\n', 'utf8');
-    console.log('LUNABOT_BENCHMARK_SUMMARY ' + JSON.stringify(summary));
+    // Emit a single machine-readable line so the CI log preserves measured results.
+    console.log('LUNABOT_BENCHMARK_JSON ' + JSON.stringify(artifact));
     expect(cases).toHaveLength(SEEDS.length * STRATEGIES.length);
   });
 });
