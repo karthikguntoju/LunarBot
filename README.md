@@ -14,7 +14,7 @@ An academic Artificial Intelligence and Machine Learning mini-project simulating
 
 **LunaBot** is a high-fidelity client-side simulation designed to demonstrate autonomous path planning, dynamic obstacle avoidance, and frontier exploration in an airless, hazardous lunar habitat environment.
 
-The rover navigates procedural lunar terrain consisting of craters with depressed bowls and raised rims, scattered impact boulders, ridges, and slopes. It evaluates terrain traversability using a discrete 2.5D navigation grid, computes Pareto-optimal routes with a risk-aware **A\*** pathfinding algorithm, reacts immediately to newly introduced dynamic obstacles via real-time replanning, and executes frontier-based autonomous exploration.
+The rover navigates procedural lunar terrain consisting of craters with depressed bowls and raised rims, scattered impact boulders, ridges, and slopes. It evaluates terrain traversability using a discrete 2.5D navigation grid, computes weighted-cost routes with a risk-aware **A\*** pathfinding algorithm, reacts immediately to newly introduced dynamic obstacles via real-time replanning, and executes frontier-based autonomous exploration.
 
 ---
 
@@ -39,12 +39,12 @@ The rover navigates procedural lunar terrain consisting of craters with depresse
 
 ### 🧭 Risk-Aware A* Path Planning
 - Discretized 2.5D navigation grid classifying terrain based on slope gradients, boulder clearances, and boundary limits.
-- Configurable Pareto routing strategies:
+- Configurable route-cost strategies:
   - **Shortest**: Minimizes physical distance traveled.
   - **Safer**: Heavily penalizes steep slopes (>18°) and boulder proximity to protect mechanical integrity.
   - **Balanced**: Optimal balance between travel time, energy, and terrain difficulty.
-- Admissible octile distance heuristic ensuring algorithmic completeness and optimal routes.
-- Corner-cutting prevention across diagonal blocker pairs.
+- Octile-distance heuristic for weighted grid search.
+- Strict diagonal clearance: a diagonal move is rejected when either adjacent orthogonal cell is blocked.
 
 ### ⚡ Dynamic Obstacle Avoidance & Replanning (Mandatory Review Feature)
 - Operators can inject unexpected boulders into the lunar landscape at runtime.
