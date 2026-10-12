@@ -111,6 +111,27 @@ describe('AStarPathfinder & NavigationGrid Engine', () => {
     expect(containsBlockedPoint).toBe(false);
   });
 
+  it('6. Prevents diagonal corner cutting beside a blocked cell', () => {
+    const start = { x: 10, y: 10 };
+    const goal = { x: 11, y: 11 };
+
+    // Block one orthogonal cell that touches the direct diagonal.
+    const sideCell = grid.getCell(11, 10)!;
+    sideCell.isTraversable = false;
+    sideCell.isObstacle = true;
+    sideCell.riskLevel = 'blocked';
+    sideCell.riskCost = Infinity;
+
+    const result = AStarPathfinder.findPath(start, goal, grid, 'shortest');
+    expect(result.success).toBe(true);
+    expect(result.waypoints.length).toBeGreaterThan(2);
+    expect(result.waypoints.some((wp, i, all) => {
+      if (i === 0) return false;
+      const prev = all[i - 1];
+      return prev.gridX === 10 && prev.gridY === 10 && wp.gridX === 11 && wp.gridY === 11;
+    })).toBe(false);
+  });
+
   it('5. Compares shortest vs safer path strategies', () => {
     const start = { x: 10, y: 10 };
     const goal = { x: 25, y: 25 };
