@@ -20,21 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run unit tests and deterministic benchmark
-        run: npm test
-      - name: Print benchmark summary
-        if: always()
-        run: |
-          if [ -f benchmark-artifacts/benchmark-results.json ]; then
-            cat benchmark-artifacts/benchmark-results.json
-          else
-            echo "Benchmark artifact was not generated."
-          fi
-      - name: Upload benchmark results
-        if: always() && hashFiles('benchmark-artifacts/benchmark-results.json') != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: lunabot-benchmark-results
-          path: benchmark-artifacts/benchmark-results.json
-          if-no-files-found: error
+        run: npm test -- --reporter=verbose --silent=false
       - name: Check production build
         run: npm run build
